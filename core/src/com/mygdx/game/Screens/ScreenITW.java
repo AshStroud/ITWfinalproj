@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Fonts;
 import com.mygdx.game.GamITW;
+import com.mygdx.game.StageActors.IbDir;
 import com.mygdx.game.StageActors.StgIntoTheWoods;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 public class ScreenITW implements Screen {
 	GamITW gamITW;
 	StgIntoTheWoods stgIntoTheWoods;
+	IbDir ibDir;
 
 	public ScreenITW(GamITW gamITW) {
 		this.gamITW = gamITW;
