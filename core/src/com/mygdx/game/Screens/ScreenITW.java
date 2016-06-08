@@ -70,7 +70,7 @@ public class ScreenITW implements Screen {
 	Rectangle rectObjectBounds,rectEnemiesBounds;
 	
 	
-		
+
 
 	@Override
 	public void show() {
