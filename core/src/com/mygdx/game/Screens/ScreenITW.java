@@ -58,7 +58,6 @@ public class ScreenITW implements Screen {
 	OrthogonalTiledMapRenderer orthotmrRenderer;
 	OrthographicCamera ocMainCam;
 	Preferences prefCoords;
-	int nTest;
 
 	ArrayList<Rectangle> arlRectObjectBounds = new ArrayList<Rectangle>();
 	ArrayList<Rectangle> arlEnemiesBounds = new ArrayList<Rectangle>();
