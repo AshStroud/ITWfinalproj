@@ -3,6 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,14 +47,15 @@ public class ScreenITW implements Screen {
 	TextureAtlas taSprite;
 	TextureRegion[] artrFrames;
 	TextureRegion trCurrentFrame;
-	float fSpriteX = 0;
-	float fSpriteY = 0;
+	float fSpriteX;
+	float fSpriteY;
 	float fSpriteSpeed = 100f;
 	float fTime = 0f;
 	Animation aniMain;
 	TiledMap tmGameMap;
 	OrthogonalTiledMapRenderer orthotmrRenderer;
 	OrthographicCamera ocMainCam;
+	Preferences prefCoords;
 
 	ArrayList<Rectangle> arlRectObjectBounds = new ArrayList<Rectangle>();
 	ArrayList<Rectangle> arlEnemiesBounds = new ArrayList<Rectangle>();
@@ -74,6 +76,9 @@ public class ScreenITW implements Screen {
 		rectSprite = new Rectangle();
 		sbBatch = new SpriteBatch();
 		mpBounds = new MapProperties();
+		prefCoords = Gdx.app.getPreferences("Coordinates");
+		fSpriteX = prefCoords.getFloat("Last X-Coord");
+		fSpriteY = prefCoords.getFloat("Last Y-Coord");
 		//BackGround = new Texture(Gdx.files.internal("lostwoods2.jpg"));
 		txSprite = new Texture(Gdx.files.internal("CinderellaSpriteSheet.png"));
 		taSprite = new TextureAtlas("PackedCinderellaSpriteSheet.pack");
@@ -150,23 +155,32 @@ public class ScreenITW implements Screen {
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
 			fSpriteX -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			trCurrentFrame = aniMain.getKeyFrame(4 + fTime);
+			prefCoords.putFloat("Last X-Coord", fSpriteX);
 			sDirection = "Left";
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
 			fSpriteX += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			trCurrentFrame = aniMain.getKeyFrame(8 + fTime);
+			prefCoords.putFloat("Last X-Coord", fSpriteX);
 			sDirection = "Right";
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
 			fSpriteY += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			//System.out.println("Player Sprite Y:" + fSpriteY);
 			trCurrentFrame = aniMain.getKeyFrame(12 + fTime);
+			prefCoords.putFloat("Last Y-Coord", fSpriteY);
 			sDirection = "Up";
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
 			fSpriteY -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			trCurrentFrame = aniMain.getKeyFrame(0 + fTime);
+			prefCoords.putFloat("Last Y-Coord", fSpriteY);
 			sDirection = "Down";
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
+			prefCoords.putFloat("Last X-Coord", 350);
+			prefCoords.putFloat("Last Y-Coord", 250);
+			System.out.println("Saved Coordinates Reset");
 		}
 
 		ocMainCam.position.set(fSpriteX, fSpriteY, 0);
@@ -188,6 +202,8 @@ public class ScreenITW implements Screen {
 		//batch.draw(BackGround, 0, 0);
 		sbBatch.draw(trCurrentFrame, (int) fSpriteX, (int) fSpriteY);
 		sbBatch.end();
+
+		prefCoords.flush();
 
 		//Check through all of the rectangles in the Arraylist of Rectangles
 		for (int i = 0; i < arlRectObjectBounds.size(); i++) {
