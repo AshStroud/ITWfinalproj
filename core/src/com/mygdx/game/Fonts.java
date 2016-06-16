@@ -27,25 +27,29 @@ public class Fonts extends ApplicationAdapter {
             BitmapFont textFont = generator.generateFont(parameter);
             generator.dispose();
             return textFont;
-        }
-        else if (nChoose == 1){
+        } else if (nChoose == 1) {
             parameter.size = 30;
             BitmapFont textFont = generator.generateFont(parameter);
             generator.dispose();
             return textFont;
-        }
-        else if (nChoose == 3){
+        } else if (nChoose == 3) {
             parameter1.color = Color.WHITE;
             parameter1.size = 29;
             BitmapFont textFont = generator1.generateFont(parameter1);
             generator1.dispose();
             return textFont;
-        }
-        else {
+        } else if (nChoose == 4) {
+            parameter.size = 29;
+            parameter.color = Color.WHITE;
+            BitmapFont textFont = generator.generateFont(parameter);
+            generator.dispose();
+            return textFont;
+        } else {
             parameter.size = 18;
             BitmapFont textFont = generator.generateFont(parameter);
             generator.dispose();
             return textFont;
         }
+
     }
 }

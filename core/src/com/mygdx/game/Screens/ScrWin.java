@@ -14,7 +14,7 @@ import com.mygdx.game.TextButtons.TbsMenu;
 /**
  * Created by michelle on 4/20/2016.
  */
-public class ScrWin implements Screen{
+public class ScrWin implements Screen {
     GamITW gamITW;
     TbsMenu tbsMenu;
     TbMenu tbContinue;
@@ -23,6 +23,7 @@ public class ScrWin implements Screen{
     String sWin;
     BitmapFont font;
     Fonts fonts;
+    ScreenITW screenITW;
 
     public ScrWin(GamITW gamITW, Fonts _fonts) {
         this.gamITW = gamITW;
@@ -44,14 +45,15 @@ public class ScrWin implements Screen{
 
     @Override
     public void render(float delta) {
+        screenITW = new ScreenITW(gamITW);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         batch.begin();
         stage.act();
         font.draw(batch, sWin, 220, 300);
         batch.end();
         stage.draw();
-        if(tbContinue.isPressed()){
+        if (tbContinue.isPressed()) {
             gamITW.currentState = GamITW.GameState.GAME;
             gamITW.updateState();
         }

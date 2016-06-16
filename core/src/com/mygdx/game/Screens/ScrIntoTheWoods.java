@@ -15,27 +15,28 @@ import com.mygdx.game.TextButtons.TbsMenu;
 /**
  * Created by Luke on 2016-04-07.
  */
-public class ScrIntoTheWoods implements Screen{
+public class ScrIntoTheWoods implements Screen {
     StgIntoTheWoods stgIntoTheWoods;
     com.mygdx.game.GamITW gamITW;
     TbMenu button;
     TbsMenu tbsMenu;
     Fonts fonts;
+
     public ScrIntoTheWoods(GamITW gamITW, Fonts _fonts) {
         this.gamITW = gamITW;
-        fonts= _fonts;
+        fonts = _fonts;
     }
 
     @Override
     public void show() {
-        tbsMenu= new TbsMenu(fonts);
+        tbsMenu = new TbsMenu(fonts);
         Music Music;
 //        Music= Gdx.audio.newMusic(Gdx.files.internal("IntoTheWoods(Prologue).mp3"));
-        stgIntoTheWoods= new StgIntoTheWoods();
+        stgIntoTheWoods = new StgIntoTheWoods();
         Gdx.input.setInputProcessor(stgIntoTheWoods);
-        button = new TbMenu("Battle",tbsMenu);
+        button = new TbMenu("Battle", tbsMenu);
         button.setBounds(350, 0, 300, 100);
-        button.addListener(new InputListener(){
+        button.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 gamITW.currentState = GamITW.GameState.WEAPONS;
