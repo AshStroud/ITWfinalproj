@@ -1,6 +1,5 @@
 package com.mygdx.game.Screens;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
@@ -24,10 +23,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Fonts;
 import com.mygdx.game.GamITW;
-import com.mygdx.game.StageActors.IbDir;
-import com.mygdx.game.StageActors.StgIntoTheWoods;
 
-import java.awt.Font;
 import java.util.ArrayList;
 
 //Sources: Orthographic Camera Properties: http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx
@@ -42,7 +38,7 @@ public class ScreenITW implements Screen {
     Fonts fonts;
     BitmapFont Goal;
     int nMapWidth, nMapHeight, nTileWidth, nTileHeight, nMapTileWidth, nMapTileHeight;
-    Music bgMusic,IWTG;
+    Music bgMusic, IWTG;
     SpriteBatch sbBatch;
     Texture txSprite;
     TextureAtlas taSprite;
@@ -52,7 +48,7 @@ public class ScreenITW implements Screen {
     float fSpriteY = 0;
     float fSpriteSpeed = 100f;
     float fTime = 0f;
-    float fSec=0f;
+    float fSec = 0f;
     Animation aniMain;
     TiledMap tmGameMap;
     OrthogonalTiledMapRenderer orthotmrRenderer;
@@ -109,9 +105,53 @@ public class ScreenITW implements Screen {
 
     @Override
     public void render(float delta) {
-        fSec+= 1;
+        fSec += 1;
+        if (fSec / 60 <= 2) {
+            fonts = new Fonts();
+            Goal = fonts.makeFont(4);
+            sbBatch.begin();
+            Goal.draw(sbBatch, "Get to the festival", Gdx.graphics.getWidth() / 2 - 200, 3 * Gdx.graphics.getHeight() / 4);
+            sbBatch.end();
+
+
+        } else {
+            bgMusic.play();
+
+        }
 
         System.out.println(fSec);
+        for (int i = 0; i < arlEnemiesBounds.size(); i++) {
+            if (rectSprite.overlaps(arlEnemiesBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
+
+                if (sDirection == "Up") {
+                    fSpriteY= fSpriteY-15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+                } else if (sDirection == "Down") {
+                    fSpriteY += 15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+
+                } else if (sDirection == "Right") {
+                    fSpriteX -= 15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+
+                } else if (sDirection == "Left") {
+                    fSpriteX += 15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+
+                }
+                arlEnemiesBounds.remove(i);
+            }
+
+
+        }
 
         //Rendering Sprite
         if (fTime < 4) {
@@ -197,26 +237,7 @@ public class ScreenITW implements Screen {
 
         }
 
-        for (int i = 0; i < arlEnemiesBounds.size(); i++) {
-            if (rectSprite.overlaps(arlEnemiesBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
-                if (sDirection == "Up") {
-                    fSpriteY -= 150f;
-                } else if (sDirection == "Down") {
-                    fSpriteY += 150f;
 
-                } else if (sDirection == "Right") {
-                    fSpriteX -= 150f;
-
-                } else if (sDirection == "Left") {
-                    fSpriteX += 150f;
-
-                }
-                gamITW.currentState = GamITW.GameState.WEAPONS;
-                gamITW.updateState();
-            }
-
-
-        }
         for (int i = 0; i < arlObjectiveBounds.size(); i++) {
             if (rectSprite.overlaps(arlObjectiveBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
                 fSpriteX = 0;
@@ -227,19 +248,7 @@ public class ScreenITW implements Screen {
             }
         }
 
-        if (fSec/60 <= 2) {
-            fonts = new Fonts();
-            Goal = fonts.makeFont(4);
-            sbBatch.begin();
-            Goal.draw(sbBatch, "Get to the festival", Gdx.graphics.getWidth() / 2-200, 3 * Gdx.graphics.getHeight() / 4);
-            sbBatch.end();
-//            IWTG.play();
 
-        }
-        else{
-            bgMusic.play();
-
-        }
 
 
     }

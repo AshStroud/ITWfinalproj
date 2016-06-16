@@ -74,7 +74,7 @@ public class ScrWeapons implements Screen {
         tbKnife.addListener(new InputListener() {
             //@Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                scrBattle.damage(25);
+                scrBattle.damage(250);
                 scrBattle.weapon(txKnife);
                 gamITW.currentState = GamITW.GameState.BATTLE;
                 gamITW.updateState();

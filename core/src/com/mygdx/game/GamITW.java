@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.mygdx.game.Screens.ScrBattle;
-import com.mygdx.game.Screens.ScrIntoTheWoods;
 import com.mygdx.game.Screens.ScrLose;
 import com.mygdx.game.Screens.ScrMain;
 import com.mygdx.game.Screens.ScrWeapons;
@@ -14,7 +13,6 @@ import com.mygdx.game.TextButtons.TbsDialog;
 import com.mygdx.game.TextButtons.TbsMenu;
 
 public class GamITW extends Game {
-	ScrIntoTheWoods scrIntoTheWoods;
 	ScrMain scrMain;
 	ScrBattle scrBattle;
 	ScrWin scrWin;
@@ -54,10 +52,8 @@ public class GamITW extends Game {
 
 	@Override
 	public void create () {
-		setScreen(new ScrIntoTheWoods(this, fonts));
 		scrMain = new ScrMain(this,fonts);
 		screenITW= new ScreenITW(this);
-		scrIntoTheWoods = new ScrIntoTheWoods(this,fonts);
 		scrBattle = new ScrBattle(this, healthBar, fonts, dialog);
 		scrWin = new ScrWin(this, fonts);
 		scrWeapons = new ScrWeapons(this, scrBattle, fonts);
