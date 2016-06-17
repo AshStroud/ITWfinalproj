@@ -63,6 +63,7 @@ public class ScreenITW implements Screen {
     RectangleMapObject rmoCollisionRect, rmoEnemies, rmoObjective;
     MapObjects moCollisionDetection, moEnemies, moObjective;
     Rectangle rectObjectBounds, rectEnemiesBounds, rectObjectiveBounds;
+    boolean bLoadMap = true;
 
 
     public ScreenITW(GamITW gamITW) {
@@ -97,8 +98,10 @@ public class ScreenITW implements Screen {
         ocMainCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         ocMainCam.update();
 
-        SetMap("Mission1Map1.tmx");
 
+        if (bLoadMap == true) {
+            SetMap("Mission1Map1.tmx");
+        }
 
     }
 
@@ -106,52 +109,7 @@ public class ScreenITW implements Screen {
     @Override
     public void render(float delta) {
         fSec += 1;
-        if (fSec / 60 <= 2) {
-            fonts = new Fonts();
-            Goal = fonts.makeFont(4);
-            sbBatch.begin();
-            Goal.draw(sbBatch, "Get to the festival", Gdx.graphics.getWidth() / 2 - 200, 3 * Gdx.graphics.getHeight() / 4);
-            sbBatch.end();
 
-
-        } else {
-            bgMusic.play();
-
-        }
-
-        System.out.println(fSec);
-        for (int i = 0; i < arlEnemiesBounds.size(); i++) {
-            if (rectSprite.overlaps(arlEnemiesBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
-
-                if (sDirection == "Up") {
-                    fSpriteY= fSpriteY-15;
-                    bgMusic.stop();
-                    gamITW.currentState = GamITW.GameState.WEAPONS;
-                    gamITW.updateState();
-                } else if (sDirection == "Down") {
-                    fSpriteY += 15;
-                    bgMusic.stop();
-                    gamITW.currentState = GamITW.GameState.WEAPONS;
-                    gamITW.updateState();
-
-                } else if (sDirection == "Right") {
-                    fSpriteX -= 15;
-                    bgMusic.stop();
-                    gamITW.currentState = GamITW.GameState.WEAPONS;
-                    gamITW.updateState();
-
-                } else if (sDirection == "Left") {
-                    fSpriteX += 15;
-                    bgMusic.stop();
-                    gamITW.currentState = GamITW.GameState.WEAPONS;
-                    gamITW.updateState();
-
-                }
-                arlEnemiesBounds.remove(i);
-            }
-
-
-        }
 
         //Rendering Sprite
         if (fTime < 4) {
@@ -215,6 +173,20 @@ public class ScreenITW implements Screen {
         sbBatch.draw(trCurrentFrame, (int) fSpriteX, (int) fSpriteY);
         sbBatch.end();
 
+// Draw Text for Objective
+        if (fSec / 60 <= 2) {
+            fonts = new Fonts();
+            Goal = fonts.makeFont(4);
+            sbBatch.begin();
+            Goal.draw(sbBatch, "Get to the festival", Gdx.graphics.getWidth() / 2 - 200, 3 * Gdx.graphics.getHeight() / 4);
+            sbBatch.end();
+
+
+        } else {
+            bgMusic.play();
+
+        }
+
         prefCoords.flush();
 
         //Check through all of the rectangles in the Arraylist of Rectangles
@@ -222,18 +194,51 @@ public class ScreenITW implements Screen {
             if (rectSprite.overlaps(arlRectObjectBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
                 //Using the Sprite's current direction, reposition the Sprite accordingly
                 if (sDirection == "Up") {
-                    fSpriteY -= 5f;
+                    fSpriteY -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
                 } else if (sDirection == "Down") {
-                    fSpriteY += 5f;
-
+                    fSpriteY += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
                 } else if (sDirection == "Right") {
-                    fSpriteX -= 5f;
+                    fSpriteX -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
                 } else if (sDirection == "Left") {
-                    fSpriteX += 5f;
-
+                    fSpriteX += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
                 }
 
             }
+
+        }
+        for (int i = 0; i < arlEnemiesBounds.size(); i++) {
+            if (rectSprite.overlaps(arlEnemiesBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
+
+                if (sDirection == "Up") {
+                    fSpriteY = fSpriteY - 15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+                    bLoadMap = false;
+                } else if (sDirection == "Down") {
+                    fSpriteY += 15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+
+                } else if (sDirection == "Right") {
+                    fSpriteX -= 15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+
+                } else if (sDirection == "Left") {
+                    fSpriteX += 15;
+                    bgMusic.stop();
+                    gamITW.currentState = GamITW.GameState.WEAPONS;
+                    gamITW.updateState();
+
+                }
+                tmGameMap.getLayers().remove(tmGameMap.getLayers().get("Enemies"));
+                arlEnemiesBounds.remove(i);
+                tmGameMap.getLayers().remove(tmGameMap.getLayers().get("Enemy Sprites"));
+            }
+
 
         }
 
@@ -244,11 +249,10 @@ public class ScreenITW implements Screen {
                 fSpriteY = 0;
                 bgMusic.stop();
                 SetMap("Mission2Map2.tmx");
+                bLoadMap = true;
                 break;
             }
         }
-
-
 
 
     }
