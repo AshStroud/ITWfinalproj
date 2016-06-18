@@ -98,7 +98,8 @@ public class ScreenITW implements Screen {
         ocMainCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         ocMainCam.update();
 
-
+       // Using this boolean so the map is not reload everytime the screen is called
+        // this allows for the assets to be deleted from the map
         if (bLoadMap == true) {
             SetMap("Mission1Map1.tmx");
         }
@@ -234,6 +235,7 @@ public class ScreenITW implements Screen {
                     gamITW.updateState();
 
                 }
+                // removes the layers from the tiled map and  removes the rectangle from array
                 tmGameMap.getLayers().remove(tmGameMap.getLayers().get("Enemies"));
                 arlEnemiesBounds.remove(i);
                 tmGameMap.getLayers().remove(tmGameMap.getLayers().get("Enemy Sprites"));
